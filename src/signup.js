@@ -16,7 +16,7 @@ export default function Signup() {
   const handleSubmit = async (e) => {
       e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:5000/auth/register", formData);
+            const res = await axios.post("http://192.168.122.106:5000/auth/register", formData);
             setMessage(res.data.message || "Registration successful!");
             setTimeout(() => {
                 navigate('/login')

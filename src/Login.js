@@ -24,7 +24,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
       e.preventDefault();
             try {
-              const res = await axios.post("http://localhost:5000/auth/login", formData);
+              const res = await axios.post("http://192.168.122.106:5000/auth/login", formData);
               setMessage(res.data.message || "Login successful!");
               localStorage.setItem('token', res.data.token)
               localStorage.setItem('userId', res.data.id)
@@ -39,7 +39,7 @@ export default function Login() {
 
   const getData = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/table-data/users");
+      const res = await axios.get("http://192.168.122.106:5000/table-data/users");
      setData([...res.data])
       setMessage(res.data.message || "Fetched successful!");
     } catch (err) {
@@ -51,7 +51,7 @@ export default function Login() {
     const deletuser = async () => {
     try {
         
-      const res = await axios.delete(`http://localhost:5000/api/auth/delete/${selectedId}`, {
+      const res = await axios.delete(`http://192.168.122.106:5000/api/auth/delete/${selectedId}`, {
      headers: {
     "Authorization": `Bearer ${token}`
        }
@@ -66,7 +66,7 @@ export default function Login() {
   async function sendOtp() {
   try {
     const res = await axios.post(
-      "http://localhost:5000/api/auth/send-otp",
+      "http://192.168.122.106:5000/api/auth/send-otp",
       { email: formData.email }, // <-- This is the request body
       {
         headers: {
@@ -108,7 +108,7 @@ export default function Login() {
         <button type="submit" style={styles.button}>Login</button>
       </form>
       {message && <p style={styles.message}>{message}</p>}
-      <Link to='/'>Sign Up</Link><br/>
+      <Link to='/signup'>Sign Up</Link><br/>
       <br/>
 
        <button  style={{backgroundColor: "white", color:"red", fontWeight: "bold"}} onClick={deletuser}>Delete</button>

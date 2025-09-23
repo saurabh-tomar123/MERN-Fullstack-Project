@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#you{
+  justify-content: flex-start;
+}
+#y{
+  background-color: yellow;
+  padding: 10px;
+  border-radius: 5%;
+  color: black;
+}
+
+ #other{
+  justify-content: flex-end;
+}
+#b{
+  background-color: blue;
+  padding: 10px;
+  border-radius: 5%;
+}
