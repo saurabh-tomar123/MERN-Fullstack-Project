@@ -66,7 +66,7 @@ const initialState = {
   initialConversations : [...Conversations],
   messages: [],
   contactList: [...Conversations],
-  socket : io("http://192.168.122.106:5000"),
+  socket : io("https://mern-fullstack-project-navy.vercel.app"),
   username: "saurabh",
   currentUser:{}
 };

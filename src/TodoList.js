@@ -19,7 +19,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ChatBox from "./ChatBox";
 
 export default function TodoListTable() {
 
@@ -79,13 +78,12 @@ export default function TodoListTable() {
 const getMembersData = async () => {
     try {
         const token = localStorage.getItem('token')
-      const res = await axios.get("http://192.168.122.106:5000/table-data/members",{
+      const res = await axios.get("https://mern-fullstack-project-navy.vercel.app/table-data/members",{
             headers: {
             "Authorization": `Bearer ${token}`
             }
             });
          setData(res.data)
-    // showToast('success',res.data.message || "Fetched successful!")
     } catch (err) {
     console.log(err.response?.data?.message || "Fetched failed!")
     }
@@ -95,7 +93,7 @@ const getMembersData = async () => {
     async function handleSubmit() {
         try {
             const token = localStorage.getItem('token')
-            const res = await axios.post("http://192.168.122.106:5000/table-data/members", form, {
+            const res = await axios.post("https://mern-fullstack-project-navy.vercel.app/table-data/members", form, {
             headers: {
             "Authorization": `Bearer ${token}`
             }
@@ -110,7 +108,7 @@ const getMembersData = async () => {
     }
         async function handleDataUpdate() {
         try {
-            const res = await axios.put("http://192.168.122.106:5000/table-data/"+selectedId, { id: selectedId, ...form });
+            const res = await axios.put("https://mern-fullstack-project-navy.vercel.app/table-data/"+selectedId, { id: selectedId, ...form });
              showToast('success',res.data.message || "Fetched successful!")
             handleClose();
             getMembersData()
@@ -129,7 +127,7 @@ const getMembersData = async () => {
 
     const deletuser = async (id) => {
         try {
-            const res = await axios.delete(`http://192.168.122.106:5000/table-data/${id}`);
+            const res = await axios.delete(`https://mern-fullstack-project-navy.vercel.app/table-data/${id}`);
             showToast('success',res.data.message || "Deleted successful!")
             getMembersData()
         } catch (err) {
@@ -202,7 +200,6 @@ const getMembersData = async () => {
                 Click a row to see quick details. Click column headers to sort.
             </Typography>
 
-            <ChatBox />
             <Modal open={open}onClose={handleClose}>
                 <Box
                     sx={{

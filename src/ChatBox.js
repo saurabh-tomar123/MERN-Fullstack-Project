@@ -51,7 +51,7 @@ export default function ChatBox() {
       await socket.emit("send_message", messageData);
       //   setMessages((list) => [...list, messageData]);
       setcurrentMessage("");
-      notification.play();
+      // notification.play();
     };
   }
 
@@ -137,7 +137,9 @@ export default function ChatBox() {
       (<MainContainer style={{ maxWidth: "800px", width: "100%", borderRadius: "20px" }}>
         <Sidebar
           position="left"
-          style={{ 'flexBasis': open ? "10%" : "35%", transition: "transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)" }}
+          style={{ 'flexBasis': open ? "10%" : "35%", transition: "transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)",
+            display: window.innerWidth > 800 ? 'block': 'none'
+           }}
         >
           <KeyboardArrowRightIcon style={{
             padding: "5px", border: "1px solid gray", borderRadius: "50%",

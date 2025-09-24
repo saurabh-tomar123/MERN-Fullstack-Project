@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from 'react-router-dom'
+import ChatBox from "./ChatBox";
 
 
 export default function Login() {
@@ -11,10 +12,6 @@ export default function Login() {
   const navigate  = useNavigate()
   const token = localStorage.getItem('token')
 
-  useEffect(()=> {
-    getData()
-  },[])
-
   // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,7 +21,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
       e.preventDefault();
             try {
-              const res = await axios.post("http://192.168.122.106:5000/auth/login", formData);
+              const res = await axios.post("https://mern-fullstack-project-navy.vercel.app/auth/login", formData);
               setMessage(res.data.message || "Login successful!");
               localStorage.setItem('token', res.data.token)
               localStorage.setItem('userId', res.data.id)
@@ -36,55 +33,10 @@ export default function Login() {
             }
     }
 
-
-  const getData = async () => {
-    try {
-      const res = await axios.get("http://192.168.122.106:5000/table-data/users");
-     setData([...res.data])
-      setMessage(res.data.message || "Fetched successful!");
-    } catch (err) {
-      setMessage(err.response?.data?.message || "Fetched failed!");
-    }
-  };
-
-
-    const deletuser = async () => {
-    try {
-        
-      const res = await axios.delete(`http://192.168.122.106:5000/api/auth/delete/${selectedId}`, {
-     headers: {
-    "Authorization": `Bearer ${token}`
-       }
-    });
-        getData()
-      setMessage(res.data.message || "Fetched successful!");
-    } catch (err) {
-      setMessage(err.response?.data?.message || "Fetched failed!");
-    }
-  };
-
-  async function sendOtp() {
-  try {
-    const res = await axios.post(
-      "http://192.168.122.106:5000/api/auth/send-otp",
-      { email: formData.email }, // <-- This is the request body
-      {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json"
-        }
-      }
-    );
-
-    setMessage(res.data.message || "OTP sent successfully!");
-    getData();
-  } catch (err) {
-    setMessage(err.response?.data?.message || "OTP sending failed!");
-  }
-}
-
   return (
     <div style={styles.container}>
+     <ChatBox />
+      
       <h2 style={styles.heading}>Login</h2>
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
@@ -109,27 +61,6 @@ export default function Login() {
       </form>
       {message && <p style={styles.message}>{message}</p>}
       <Link to='/signup'>Sign Up</Link><br/>
-      <br/>
-
-       <button  style={{backgroundColor: "white", color:"red", fontWeight: "bold"}} onClick={deletuser}>Delete</button>
-
-           <button onClick={sendOtp}>sendOtp</button> 
-       <div>
-        {
-            data && data.map((item, index)=> 
-            <div key={index} onClick={()=> setSelectedId(item._id)}
-            style={{backgroundColor:"gray", borderRadius:"20px",
-                margin:"5px",padding:"5px"
-            }}
-            >
-            <span>
-                {item.email}
-                </span>
-                
-                <p>{item._id}</p></div>
-                )
-        }
-       </div>
     </div>
   );
 }
@@ -137,7 +68,7 @@ export default function Login() {
 // Inline CSS styles
 const styles = {
   container: {
-    width: "300px",
+    width: window.innerWidth > 800 ? "500px" : "300px",
     margin: "50px auto",
     padding: "20px",
     border: "1px solid #ddd",
