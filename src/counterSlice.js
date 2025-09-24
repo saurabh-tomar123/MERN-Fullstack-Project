@@ -76,7 +76,6 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     setMessages: (state, action) => {
-    console.log(action.payload)
     state.messages = [...state.messages, {...action.payload}]
     },
     setContactList: (state, action) => {

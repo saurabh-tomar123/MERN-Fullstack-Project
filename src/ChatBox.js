@@ -49,7 +49,7 @@ export default function ChatBox() {
 
 
       await socket.emit("send_message", messageData);
-      //   setMessages((list) => [...list, messageData]);
+        // setMessages((list) => [...list, messageData]);
       setcurrentMessage("");
       // notification.play();
     };
@@ -183,7 +183,7 @@ export default function ChatBox() {
             <ConversationHeader.Content
             style={{textAlign: "start"}}
               info="online"
-              userName={username}
+              userName={typingUser ? typingUser : "Not Joined"}
             />
             <ConversationHeader.Actions>
               <VoiceCallButton />
