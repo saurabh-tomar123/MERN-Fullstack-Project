@@ -2,8 +2,17 @@ const express = require("express");
 const Data = require("../Models/UsersData");// tableData
 const UserData = require("../Models/User");// userData
 const auth = require("../middleWare");
+const nodemailer = require("nodemailer");
 
 const router = express.Router();
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
 
 
 
@@ -69,6 +78,45 @@ router.put("/:id", async (req, res) => {
     res.json({ message: "Updated successfully", data: updated });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+});
+
+async function sendOTP(email, otp) {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: "Your OTP Code",
+    text: `Your OTP code is ${otp}. It will expire in 5 minutes.`
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent: " + info.response);
+    return true;
+  } catch (err) {
+    console.error("Error sending email:", err);
+    return false;
+  }
+} 
+router.post("/send-otp", async (req, res) => {
+  const { emialId } = req.body;
+  console.log(req.body)
+
+  if (!emialId) {
+    return res.status(400).json({ success: false, message: "Email is required" });
+  }
+
+  // Generate 6-digit OTP
+  const otp = Math.floor(100000 + Math.random() * 900000);
+
+  // Send OTP via email
+  const sent = await sendOTP(emialId, otp);
+
+  if (sent) {
+    // Ideally, store OTP in DB or cache with expiry time for verification
+    res.json({ success: true, otp, message: "OTP sent successfully" });
+  } else {
+    res.status(500).json({ success: false, message: "Failed to send OTP" });
   }
 });
 
