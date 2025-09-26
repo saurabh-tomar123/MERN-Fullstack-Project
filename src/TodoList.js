@@ -12,6 +12,7 @@ import {
     Box,
     Modal,
     Button,
+    Input,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
@@ -28,6 +29,7 @@ export default function TodoListTable() {
     const [open, setOpen] = useState(false);
     const [form, setForm] = useState({ name: "", department: "", location: "" });
     const [selectedId,setSelectedId] = useState('')
+    const [emialId, setEmailId] = useState('')
 
     useEffect(()=>{
         getMembersData()
@@ -136,9 +138,19 @@ const getMembersData = async () => {
     };
     
 
+    const getOtpViaEmail = async () => {
+    try {
+      const res = await axios.post("https://mern-fullstack-project-navy.vercel.app/table-data/send-otp", {emialId} );
+         showToast('success',res.data.message || "Otp Sent successfully!")
+    } catch (err) {
+        console.log(err.response?.data?.message || "Fetched failed!")
+    }
+  };
+
 
     return (
-        <div style={{ maxWidth: 900, margin: "40px auto", padding: 20 }}>
+        <div style={{ width:"100vh", margin: "40px auto", padding: 20,  }}> 
+        {/* /background: 'linear-gradient(to right, white, green)' */}
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 20 }}>
                 <Typography variant="h5" fontWeight="bold">
                     Todo — Team Directory
@@ -199,6 +211,9 @@ const getMembersData = async () => {
             <Typography variant="body2" color="textSecondary" style={{ marginTop: 10 }}>
                 Click a row to see quick details. Click column headers to sort.
             </Typography>
+
+            <Input  placeholder="Enter Email id " type='text' value={emialId} onChange={(event) => setEmailId(event.target.value)}/>
+            <Button style={{border: "1px solid gray"}} onClick={getOtpViaEmail}>Send Otp</Button>
 
             <Modal open={open}onClose={handleClose}>
                 <Box
